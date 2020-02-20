@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>a with onclick</title>
+  </head>
+  <body>
+    <a id="the-link" href="https://www.google.com" target="_blank"
+      >this is a link</a
+    >
+  </body>
+  <script>
+    // this both opens the link in a new tab, and logs "link clicked"
+    document.getElementById("the-link").onclick = () => {
+      console.log("link clicked");
+    };
+  </script>
+</html>
