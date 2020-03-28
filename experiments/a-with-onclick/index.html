@@ -7,11 +7,18 @@
     <a id="the-link" href="https://www.google.com" target="_blank"
       >this is a link</a
     >
+    <br />
+    <a id="link-2" href="https://www.google.com">another link</a>
   </body>
   <script>
     // this both opens the link in a new tab, and logs "link clicked"
     document.getElementById("the-link").onclick = () => {
       console.log("link clicked");
     };
+    document.getElementById("link-2").target = "_blank";
+    document.getElementById("link-2").href = new URL(
+      "/#hi",
+      "https://www.example.com"
+    );
   </script>
 </html>
