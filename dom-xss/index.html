@@ -34,7 +34,10 @@
       <div id="unsafe-hash-1"></div>
       <div id="unsafe-hash-2"></div>
       <div class="filter_container">
-        <div class="search_filter"><div class="results"></div></div>
+        <div class="search_filter">
+          <div class="results"></div>
+          <div class="results-fixed"></div>
+        </div>
       </div>
     </div>
     <!-- <script>let d2 = document.getElementById('d2'); d2.innerHTML = '<sc</script> -->
@@ -62,6 +65,20 @@
             )
           )
           .show();
+
+        $(".filter_container .search_filter .results-fixed").html(
+          Localize.translate(
+            "Found <var>" +
+              iTotal +
+              "</var> order" +
+              (iTotal > 1 ? "s" : "") +
+              ' matching "<var id="search-term-var"></var>"'
+          )
+        );
+        $(
+          ".filter_container .search_filter .results-fixed #search-term-var"
+        ).text(ref.customPersistentParams["search_string"]);
+        $(".filter_container .search_filter .results-fixed").show();
 
         // $("#unsafe-hash-1").html(
         //   Localize.translate("Found <var>" + h + "</var> of the items")
