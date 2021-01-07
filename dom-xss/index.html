@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>DOM XSS</title>
+    <meta name="description" content="DOM-based XSS" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+    <script src="https://code.jquery.com/jquery-1.7.2.js"></script>
+    <script src="https://global.localizecdn.com/localize.js"></script>
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+    <h1 id="the-h1">DOM-based XSS and related concepts</h1>
+    <h2 id="inner-html-h2">Inner HTML</h2>
+    <div id="d1">
+      <div id="d1-1"><span id="d1-1-s1">the content</span></div>
+      <div id="d2"></div>
+      <div id="d3"></div>
+      <!-- Add something from the hash here in a safe way -->
+      <div id="safe-hash-1"></div>
+      <div id="safe-hash-2"></div>
+      <!-- Add something from the hash here in an unsafe way (different key) -->
+      <div id="unsafe-hash-1"></div>
+      <div id="unsafe-hash-2"></div>
+      <div class="filter_container">
+        <div class="search_filter"><div class="results"></div></div>
+      </div>
+    </div>
+    <!-- <script>let d2 = document.getElementById('d2'); d2.innerHTML = '<sc</script> -->
+    <!-- file:///Users/dougnaphas/repos/play-js/dom-xss/index.html#%3Cscript%3Ealert(1);%3C/script%3E -->
+    <script>
+      $(window).bind("hashchange", function () {
+        const iTotal = 3;
+        console.log("hash changed to " + window.location.hash);
+        const ref = {
+          customPersistentParams: {
+            search_string: unescape(window.location.hash.replace("#", "")),
+          },
+        };
+
+        $(".filter_container .search_filter .results")
+          .html(
+            Localize.translate(
+              "Found <var>" +
+                iTotal +
+                "</var> order" +
+                (iTotal > 1 ? "s" : "") +
+                ' matching "<var>' +
+                ref.customPersistentParams["search_string"] +
+                '</var>"'
+            )
+          )
+          .show();
+
+        // $("#unsafe-hash-1").html(
+        //   Localize.translate("Found <var>" + h + "</var> of the items")
+        // );
+
+        // safe method with append and friends
+        // $('#safe-hash-1').append()
+      });
+    </script>
+    <script src="" async defer></script>
+  </body>
+</html>
