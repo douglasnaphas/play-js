@@ -1,10 +1,10 @@
 const m1 = [
   (req, res, next) => {
-    console.log("m1-1 happened");
+    res.locals.acc = `${res.locals.acc},m1-1`;
     return next("route");
   },
   (req, res, next) => {
-    console.log("m1-2 happened");
+    res.locals.acc = `${res.locals.acc},m1-2`;
     return next();
   },
 ];
